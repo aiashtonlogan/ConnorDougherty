@@ -1152,24 +1152,28 @@ footer {
       </div>
     </div>
     <div class="contact-form fade-in">
-      <form class="cf2" onsubmit="handleSub2(event)">
+      <form class="cf2" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="1f045abf-8548-4392-bd5f-31749f8b8943">
+        <input type="hidden" name="subject" value="New Inquiry — Connor Dougherty Website">
+        <input type="hidden" name="from_name" value="Connor Dougherty Website">
+        <input type="hidden" name="redirect" value="false">
         <div class="cf2-group">
           <div class="f2">
             <label>First Name</label>
-            <input type="text" placeholder="First">
+            <input type="text" name="first_name" placeholder="First">
           </div>
           <div class="f2">
             <label>Last Name</label>
-            <input type="text" placeholder="Last">
+            <input type="text" name="last_name" placeholder="Last">
           </div>
         </div>
         <div class="f2">
           <label>Email</label>
-          <input type="email" placeholder="your@email.com">
+          <input type="email" name="email" placeholder="your@email.com">
         </div>
         <div class="f2">
           <label>Inquiry Type</label>
-          <select>
+          <select name="inquiry_type">
             <option value="">Select one...</option>
             <option>NIL / Brand Partnership</option>
             <option>Coaching Inquiry</option>
@@ -1180,10 +1184,13 @@ footer {
         </div>
         <div class="f2">
           <label>Message</label>
-          <textarea placeholder="Tell me what you're looking for..."></textarea>
+          <textarea name="message" placeholder="Tell me what you're looking for..."></textarea>
         </div>
         <button type="submit" class="cf2-submit">Send Message</button>
       </form>
+      <div id="cf2-success" style="display:none; margin-top:16px; padding:16px 20px; background:#1a3d2b; border:1px solid #2d6a4f; color:#52b788; font-family:'Syne',sans-serif; font-size:11px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase;">
+        Thanks! Connor will be in touch soon.
+      </div>
     </div>
   </div>
 </section>
@@ -1216,14 +1223,25 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 fadeEls.forEach(el => obs.observe(el));
 
-function handleSub2(e) {
+document.querySelector('.cf2').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('.cf2-submit');
-  btn.textContent = 'Message Sent ✓';
-  btn.style.background = '#2d6a4f';
-  btn.style.color = '#fff';
-  setTimeout(() => { btn.textContent = 'Send Message'; btn.style.background = ''; btn.style.color = ''; }, 3000);
-}
+  const btn = this.querySelector('.cf2-submit');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  const data = new FormData(this);
+  const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
+  const json = await res.json();
+  if (json.success) {
+    this.reset();
+    document.getElementById('cf2-success').style.display = 'block';
+    btn.textContent = 'Send Message';
+    btn.disabled = false;
+  } else {
+    btn.textContent = 'Error — Try Again';
+    btn.disabled = false;
+    setTimeout(() => { btn.textContent = 'Send Message'; }, 3000);
+  }
+});
 </script>
 <!-- LOGAN BRANDS BADGE -->
 <a class="lb-badge" href="https://www.loganbrands.com" target="_blank" rel="noopener">
