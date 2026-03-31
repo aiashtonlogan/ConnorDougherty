@@ -469,37 +469,44 @@ nav::after {
 
 .video-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   margin-top: 40px;
 }
 .video-card {
-  background: var(--surface);
+  position: relative;
+  overflow: hidden;
   border: 1px solid var(--border);
-  padding: 12px;
   border-radius: 8px;
+  height: 280px;
+  background: #000;
 }
 .video-card video {
   width: 100%;
-  max-height: 220px;
+  height: 100%;
   display: block;
-  border-radius: 6px;
-  background: #000;
+  object-fit: cover;
 }
-.video-card .video-title {
-  margin-top: 10px;
+.video-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 14px;
+  background: rgba(12,12,12,0.72);
+  pointer-events: none;
+}
+.video-card-label {
   font-family: 'Syne', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--off);
-}
-.video-card .video-caption {
   font-size: 11px;
-  color: var(--text);
-  margin-top: 4px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
 }
 @media (max-width: 900px) {
   .video-grid { grid-template-columns: 1fr; }
+  .video-card { height: 220px; }
 }
 
 .reel-bg {
@@ -1099,28 +1106,22 @@ footer {
 
     <div class="video-grid fade-in">
       <div class="video-card">
-        <video controls poster="assets/videos/2024-highlights-poster.jpg">
-          <source src="assets/videos/2024-highlights.mp4" type="video/mp4">
+        <video controls muted playsinline width="100%" height="100%" style="object-fit:cover">
+          <source src="Connor%20Snap%20Video.mov" type="video/mp4">
           Your browser does not support the video tag.
         </video>
-        <div class="video-title">2024 Season Highlights</div>
-        <div class="video-caption">High-level split-zone and field-goal snaps.</div>
+        <div class="video-card-overlay">
+          <span class="video-card-label">Workout nSnap · 2024</span>
+        </div>
       </div>
       <div class="video-card">
-        <video controls poster="assets/videos/long-snap-technique-poster.jpg">
-          <source src="assets/videos/long-snap-technique.mp4" type="video/mp4">
+        <video controls muted playsinline width="100%" height="100%" style="object-fit:cover">
+          <source src="Connor%20Snap%20Video%202.mov" type="video/mp4">
           Your browser does not support the video tag.
         </video>
-        <div class="video-title">Technique Reel</div>
-        <div class="video-caption">Slow-motion mechanics + consistency metrics.</div>
-      </div>
-      <div class="video-card">
-        <video controls poster="assets/videos/punt-fieldgoal-reel-poster.jpg">
-          <source src="assets/videos/punt-fieldgoal-reel.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <div class="video-title">Punt & Field Goal Unit</div>
-        <div class="video-caption">Live-game snaps from multiple venues.</div>
+        <div class="video-card-overlay">
+          <span class="video-card-label">Live Game Snap</span>
+        </div>
       </div>
     </div>
 
