@@ -91,6 +91,50 @@ nav::after {
   background: var(--gold);
   opacity: 0.6;
 }
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 4px;
+  z-index: 201;
+  cursor: pointer;
+}
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 199;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+}
+.mobile-nav-overlay.open { display: flex; }
+.mobile-nav-overlay a {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+  transition: color 0.25s;
+}
+.mobile-nav-overlay a:hover { color: var(--gold); }
 
 /* ── HERO ── */
 #hero {
@@ -861,6 +905,12 @@ footer {
 @media (max-width: 900px) {
   nav { padding: 20px 24px; }
   .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-dot { display: none; }
+  .reel-card { cursor: default; }
+  .cf2-submit { cursor: default; }
+  * { cursor: default !important; }
+  a, button, [role="button"] { cursor: default !important; }
   #hero { padding: 0 24px 60px; }
   .hero-bg-text { display: none; }
   .hero-flex { flex-direction: column; align-items: flex-start; gap: 24px; }
@@ -928,7 +978,18 @@ footer {
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-dot"></div>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="mobile-nav-overlay" id="mobile-nav-overlay">
+  <a href="#about" class="mobile-nav-link">About</a>
+  <a href="#story" class="mobile-nav-link">Story</a>
+  <a href="#highlights" class="mobile-nav-link">Highlights</a>
+  <a href="#contact" class="mobile-nav-link">Contact</a>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -1220,6 +1281,19 @@ footer {
 </footer>
 
 <script>
+const hamburger = document.getElementById('nav-hamburger');
+const mobileOverlay = document.getElementById('mobile-nav-overlay');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileOverlay.classList.toggle('open');
+});
+document.querySelectorAll('.mobile-nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileOverlay.classList.remove('open');
+  });
+});
+
 const fadeEls = document.querySelectorAll('.fade-in');
 const obs = new IntersectionObserver(entries => {
   entries.forEach((e, i) => {
